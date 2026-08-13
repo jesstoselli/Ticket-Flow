@@ -96,7 +96,11 @@ fun TicketFlowNavHost(
         ) {
             val viewModel: TicketViewModel = hiltViewModel()
             val uiState by viewModel.uiState.collectAsState()
-            TicketScreen(uiState = uiState, renderQrCode = viewModel::renderQrCode)
+            TicketScreen(
+                uiState = uiState,
+                renderQrCode = viewModel::renderQrCode,
+                onBack = { navController.navigateUp() },
+            )
         }
     }
 }
