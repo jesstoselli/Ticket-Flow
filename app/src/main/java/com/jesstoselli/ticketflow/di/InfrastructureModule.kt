@@ -7,8 +7,6 @@ import com.jesstoselli.ticketflow.database.TicketFlowDatabase
 import com.jesstoselli.ticketflow.payment.cielo.CieloCallbackParser
 import com.jesstoselli.ticketflow.payment.cielo.CieloCredentials
 import com.jesstoselli.ticketflow.payment.cielo.CieloDeepLinkFactory
-import com.jesstoselli.ticketflow.payment.cielo.CieloDeepLinkPaymentGateway
-import com.jesstoselli.ticketflow.payment.domain.PaymentGateway
 import com.jesstoselli.ticketflow.purchase.data.OfflinePurchaseRepository
 import com.jesstoselli.ticketflow.purchase.domain.PurchaseRepository
 import dagger.Module
@@ -55,12 +53,4 @@ object InfrastructureModule {
     @Provides
     @Singleton
     fun provideCieloCallbackParser(json: Json): CieloCallbackParser = CieloCallbackParser(json)
-
-    @Provides
-    @Singleton
-    fun providePaymentGateway(
-        @ApplicationContext context: Context,
-        factory: CieloDeepLinkFactory,
-        credentials: CieloCredentials,
-    ): PaymentGateway = CieloDeepLinkPaymentGateway(context, factory, credentials)
 }

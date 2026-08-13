@@ -28,7 +28,7 @@ android {
         versionCode = 1
         versionName = "1.0"
 
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner = "com.jesstoselli.ticketflow.HiltTestRunner"
         buildConfigField("String", "CIELO_CLIENT_ID", cieloProperty("CIELO_CLIENT_ID"))
         buildConfigField("String", "CIELO_ACCESS_TOKEN", cieloProperty("CIELO_ACCESS_TOKEN"))
 
@@ -100,4 +100,7 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
     androidTestImplementation(libs.androidx.room.testing)
+    androidTestImplementation(libs.kotlinx.coroutines.test)
+    androidTestImplementation(libs.hilt.android.testing)
+    kspAndroidTest(libs.hilt.compiler)
 }
