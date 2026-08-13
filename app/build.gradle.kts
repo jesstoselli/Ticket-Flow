@@ -31,6 +31,10 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField("String", "CIELO_CLIENT_ID", cieloProperty("CIELO_CLIENT_ID"))
         buildConfigField("String", "CIELO_ACCESS_TOKEN", cieloProperty("CIELO_ACCESS_TOKEN"))
+
+        ksp {
+            arg("room.schemaLocation", "$projectDir/schemas")
+        }
     }
 
     buildTypes {
