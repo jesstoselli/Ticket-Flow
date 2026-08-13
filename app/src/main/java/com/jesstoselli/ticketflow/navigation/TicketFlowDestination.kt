@@ -12,4 +12,9 @@ sealed class TicketFlowDestination(val route: String) {
         const val ARG_PURCHASE_ID = "purchaseId"
         fun create(purchaseId: String) = "purchase/$purchaseId"
     }
+
+    data object Ticket : TicketFlowDestination("ticket/{purchaseId}") {
+        const val ARG_PURCHASE_ID = "purchaseId"
+        fun create(purchaseId: String) = "ticket/$purchaseId"
+    }
 }

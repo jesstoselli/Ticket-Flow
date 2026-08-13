@@ -2,6 +2,7 @@ package com.jesstoselli.ticketflow.purchase.domain
 
 import com.jesstoselli.ticketflow.model.PaymentResult
 import com.jesstoselli.ticketflow.model.Purchase
+import com.jesstoselli.ticketflow.model.Ticket
 import kotlinx.coroutines.flow.Flow
 
 data class PurchaseSelection(
@@ -31,6 +32,9 @@ interface PurchaseRepository {
     suspend fun applyPaymentResult(reference: String, result: PaymentResult): ApplyResult
     fun observePurchase(id: String): Flow<Purchase?>
     fun observePurchases(): Flow<List<Purchase>>
+
+    /** Ingresso vinculado a uma compra aprovada, se já emitido. */
+    fun observeTicket(purchaseId: String): Flow<Ticket?>
 
     /** Referência da tentativa `PAYMENT_IN_PROGRESS` mais recente, para correlacionar callbacks sem referência. */
     suspend fun activePaymentReference(): String?

@@ -21,6 +21,9 @@ interface PurchaseDao {
     @Query("SELECT * FROM purchases ORDER BY createdAtEpochMillis DESC")
     fun observePurchases(): Flow<List<PurchaseEntity>>
 
+    @Query("SELECT * FROM tickets WHERE purchaseId = :purchaseId")
+    fun observeTicket(purchaseId: String): Flow<TicketEntity?>
+
     @Query("SELECT * FROM payment_attempts WHERE reference = :reference")
     suspend fun getAttempt(reference: String): PaymentAttemptEntity?
 

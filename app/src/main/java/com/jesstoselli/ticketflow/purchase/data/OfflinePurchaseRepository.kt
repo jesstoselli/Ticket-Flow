@@ -10,6 +10,7 @@ import com.jesstoselli.ticketflow.database.toDomain
 import com.jesstoselli.ticketflow.model.PaymentResult
 import com.jesstoselli.ticketflow.model.Purchase
 import com.jesstoselli.ticketflow.model.PurchaseStatus
+import com.jesstoselli.ticketflow.model.Ticket
 import com.jesstoselli.ticketflow.purchase.domain.ApplyResult
 import com.jesstoselli.ticketflow.purchase.domain.PurchaseRepository
 import com.jesstoselli.ticketflow.purchase.domain.PurchaseSelection
@@ -122,6 +123,9 @@ class OfflinePurchaseRepository(
 
     override fun observePurchases(): Flow<List<Purchase>> =
         dao.observePurchases().map { purchases -> purchases.map(PurchaseEntity::toDomain) }
+
+    override fun observeTicket(purchaseId: String): Flow<Ticket?> =
+        dao.observeTicket(purchaseId).map { it?.toDomain() }
 
     override suspend fun activePaymentReference(): String? = dao.activePaymentReference()
 

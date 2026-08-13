@@ -3,7 +3,6 @@ package com.jesstoselli.ticketflow.purchase.ui
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -20,9 +19,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.jesstoselli.ticketflow.model.Purchase
 import com.jesstoselli.ticketflow.model.PurchaseStatus
-import com.jesstoselli.ticketflow.model.formatBrl
 
 @Composable
 fun PurchaseResultScreen(
@@ -80,7 +77,7 @@ private fun ResultContent(
 
         if (purchase.status == PurchaseStatus.APPROVED) {
             Spacer(Modifier.height(8.dp))
-            Receipt(purchase)
+            ReceiptContent(purchase)
         }
 
         Spacer(Modifier.weight(1f))
@@ -105,29 +102,6 @@ private fun ResultContent(
             shape = RoundedCornerShape(18.dp),
             modifier = Modifier.fillMaxWidth().height(52.dp),
         ) { Text("Voltar aos eventos") }
-    }
-}
-
-@Composable
-private fun Receipt(purchase: Purchase) {
-    Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
-        ReceiptRow("Evento", purchase.eventName)
-        ReceiptRow("Quantidade", purchase.quantity.toString())
-        ReceiptRow("Total", formatBrl(purchase.totalInCents))
-        ReceiptRow("Referência", purchase.currentAttemptReference ?: "—")
-        purchase.transactionId?.let { ReceiptRow("Transação", it) }
-        purchase.authorizationCode?.let { ReceiptRow("Autorização", it) }
-    }
-}
-
-@Composable
-private fun ReceiptRow(label: String, value: String) {
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceBetween,
-    ) {
-        Text(label, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
-        Text(value, style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.SemiBold)
     }
 }
 

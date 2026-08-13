@@ -2,6 +2,7 @@ package com.jesstoselli.ticketflow.database
 
 import com.jesstoselli.ticketflow.model.Purchase
 import com.jesstoselli.ticketflow.model.PurchaseStatus
+import com.jesstoselli.ticketflow.model.Ticket
 
 fun PurchaseEntity.toDomain() = Purchase(
     id = id,
@@ -18,4 +19,12 @@ fun PurchaseEntity.toDomain() = Purchase(
     transactionId = transactionId,
     authorizationCode = authorizationCode,
     resultReason = resultReason,
+)
+
+fun TicketEntity.toDomain() = Ticket(
+    id = id,
+    purchaseId = purchaseId,
+    eventId = eventId,
+    qrPayload = qrPayload,
+    issuedAtEpochMillis = issuedAtEpochMillis,
 )
