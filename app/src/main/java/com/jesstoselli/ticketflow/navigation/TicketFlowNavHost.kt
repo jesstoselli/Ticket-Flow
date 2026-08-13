@@ -7,10 +7,16 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
+import com.jesstoselli.ticketflow.checkout.ui.CheckoutEvent
+import com.jesstoselli.ticketflow.checkout.ui.CheckoutScreen
+import com.jesstoselli.ticketflow.checkout.ui.CheckoutViewModel
 import com.jesstoselli.ticketflow.events.ui.EventListScreen
 import com.jesstoselli.ticketflow.events.ui.EventListViewModel
+import androidx.compose.runtime.LaunchedEffect
 
 @Composable
 fun TicketFlowNavHost(
@@ -33,8 +39,36 @@ fun TicketFlowNavHost(
         composable(TicketFlowDestination.Tickets.route) {
             Text("Seus ingressos aparecerão aqui")
         }
-        composable(TicketFlowDestination.Checkout.route) {
-            Text("Checkout")
+        composable(
+            route = TicketFlowDestination.Checkout.route,
+            arguments = listOf(navArgument(TicketFlowDestination.Checkout.ARG_EVENT_ID) { type = NavType.StringType }),
+        ) {
+            val viewModel: CheckoutViewModel = hiltViewModel()
+            val uiState by viewModel.uiState.collectAsState()
+            LaunchedEffect(viewModel) {
+                viewModel.events.collect { event ->
+                    when (event) {
+                        is CheckoutEvent.NavigateToResult -> navController.navigate(
+                            TicketFlowDestination.PurchaseResult.create(event.purchaseId),
+                        ) {
+                            popUpTo(TicketFlowDestination.Checkout.route) { inclusive = true }
+                        }
+                    }
+                }
+            }
+            CheckoutScreen(
+                uiState = uiState,
+                onIncrease = viewModel::increaseQuantity,
+                onDecrease = viewModel::decreaseQuantity,
+                onPay = viewModel::pay,
+            )
+        }
+        composable(
+            route = TicketFlowDestination.PurchaseResult.route,
+            arguments = listOf(navArgument(TicketFlowDestination.PurchaseResult.ARG_PURCHASE_ID) { type = NavType.StringType }),
+        ) {
+            // Placeholder até a Task 7 (tela de resultado, retry e recuperação de pendentes).
+            Text("Resultado da compra")
         }
     }
 }
