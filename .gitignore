@@ -1,1 +1,9 @@
 .worktrees/
+.gradle/
+.idea/
+build/
+**/build/
+local.properties
+*.iml
+captures/
+.DS_Store
