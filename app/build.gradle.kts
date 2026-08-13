@@ -14,8 +14,13 @@ val localProperties = Properties().apply {
     if (file.exists()) file.inputStream().use(::load)
 }
 
-fun cieloProperty(name: String): String =
-    "\"${localProperties.getProperty(name, "").replace("\\", "\\\\").replace("\"", "\\\"")}\""
+// O Emulador Cielo aceita credenciais placeholder. Se local.properties não define a chave,
+// caímos num valor de exemplo não-vazio para que o app funcione direto pelo README, sem
+// passo manual. Credenciais reais em local.properties sobrescrevem o padrão.
+fun cieloProperty(name: String, default: String): String {
+    val value = localProperties.getProperty(name, "").ifBlank { default }
+    return "\"${value.replace("\\", "\\\\").replace("\"", "\\\"")}\""
+}
 
 android {
     namespace = "com.jesstoselli.ticketflow"
@@ -29,8 +34,8 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "com.jesstoselli.ticketflow.HiltTestRunner"
-        buildConfigField("String", "CIELO_CLIENT_ID", cieloProperty("CIELO_CLIENT_ID"))
-        buildConfigField("String", "CIELO_ACCESS_TOKEN", cieloProperty("CIELO_ACCESS_TOKEN"))
+        buildConfigField("String", "CIELO_CLIENT_ID", cieloProperty("CIELO_CLIENT_ID", "ticketflow-sample-client"))
+        buildConfigField("String", "CIELO_ACCESS_TOKEN", cieloProperty("CIELO_ACCESS_TOKEN", "ticketflow-sample-token"))
 
         ksp {
             arg("room.schemaLocation", "$projectDir/schemas")

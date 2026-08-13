@@ -24,8 +24,10 @@ Case técnico para vaga Android. Kotlin + Jetpack Compose, sem backend.
    ```
 
    Edite `sdk.dir` apontando para o seu Android SDK. As chaves da Cielo podem ficar
-   **vazias** — o Emulador Cielo aceita credenciais placeholder e o app trata a ausência
-   de forma explícita. Nenhum segredo é versionado.
+   **vazias**: o Emulador Cielo aceita credenciais placeholder, então quando elas estão
+   ausentes o build usa automaticamente um valor de exemplo não-vazio (`ticketflow-sample-*`)
+   e o pagamento funciona direto. Para uma integração real, defina suas próprias chaves —
+   elas sobrescrevem o padrão. Nenhum segredo é versionado.
 
    ```properties
    sdk.dir=/caminho/para/Android/sdk
