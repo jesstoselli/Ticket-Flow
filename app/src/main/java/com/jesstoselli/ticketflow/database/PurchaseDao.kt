@@ -57,4 +57,21 @@ interface PurchaseDao {
 
     @Query("UPDATE payment_attempts SET status = :status, updatedAtEpochMillis = :now WHERE reference = :reference")
     suspend fun updateAttempt(reference: String, status: String, now: Long)
+
+    @Query("""
+        SELECT currentAttemptReference FROM purchases
+        WHERE status = 'PAYMENT_IN_PROGRESS' AND currentAttemptReference IS NOT NULL
+        ORDER BY updatedAtEpochMillis DESC
+        LIMIT 1
+    """)
+    suspend fun activePaymentReference(): String?
+
+    @Query("SELECT purchaseId FROM payment_attempts WHERE reference = :reference")
+    suspend fun purchaseIdForReference(reference: String): String?
+
+    @Query("""
+        UPDATE purchases SET status = 'PENDING', updatedAtEpochMillis = :now
+        WHERE status = 'PAYMENT_IN_PROGRESS' AND updatedAtEpochMillis < :processStartedAt
+    """)
+    suspend fun markInterruptedPending(processStartedAt: Long, now: Long): Int
 }

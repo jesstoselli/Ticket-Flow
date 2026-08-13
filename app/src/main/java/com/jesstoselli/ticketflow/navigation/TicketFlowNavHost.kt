@@ -16,6 +16,8 @@ import com.jesstoselli.ticketflow.checkout.ui.CheckoutScreen
 import com.jesstoselli.ticketflow.checkout.ui.CheckoutViewModel
 import com.jesstoselli.ticketflow.events.ui.EventListScreen
 import com.jesstoselli.ticketflow.events.ui.EventListViewModel
+import com.jesstoselli.ticketflow.purchase.ui.PurchaseResultScreen
+import com.jesstoselli.ticketflow.purchase.ui.PurchaseResultViewModel
 import androidx.compose.runtime.LaunchedEffect
 
 @Composable
@@ -67,8 +69,18 @@ fun TicketFlowNavHost(
             route = TicketFlowDestination.PurchaseResult.route,
             arguments = listOf(navArgument(TicketFlowDestination.PurchaseResult.ARG_PURCHASE_ID) { type = NavType.StringType }),
         ) {
-            // Placeholder até a Task 7 (tela de resultado, retry e recuperação de pendentes).
-            Text("Resultado da compra")
+            val viewModel: PurchaseResultViewModel = hiltViewModel()
+            val uiState by viewModel.uiState.collectAsState()
+            PurchaseResultScreen(
+                uiState = uiState,
+                onRetry = viewModel::retry,
+                onViewTicket = { navController.navigate(TicketFlowDestination.Tickets.route) },
+                onBackToEvents = {
+                    navController.navigate(TicketFlowDestination.Events.route) {
+                        popUpTo(TicketFlowDestination.Events.route) { inclusive = true }
+                    }
+                },
+            )
         }
     }
 }

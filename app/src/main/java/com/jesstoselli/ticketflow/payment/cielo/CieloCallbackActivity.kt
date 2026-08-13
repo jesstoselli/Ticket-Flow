@@ -3,11 +3,21 @@ package com.jesstoselli.ticketflow.payment.cielo
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
+import androidx.lifecycle.lifecycleScope
 import com.jesstoselli.ticketflow.MainActivity
-import kotlinx.serialization.json.Json
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
+import kotlinx.coroutines.launch
 
+/**
+ * Recebe o Deep Link de retorno da Cielo. Não renderiza UI própria: delega a URI ao
+ * [HandleCieloCallbackUseCase], encerra o foreground service e reabre a [MainActivity]
+ * apontando para o resultado da compra. Callback inválido nunca fabrica aprovação.
+ */
+@AndroidEntryPoint
 class CieloCallbackActivity : ComponentActivity() {
-    private val parser = CieloCallbackParser(Json { ignoreUnknownKeys = true })
+
+    @Inject lateinit var handleCallback: HandleCieloCallbackUseCase
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -16,21 +26,22 @@ class CieloCallbackActivity : ComponentActivity() {
 
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
+        setIntent(intent)
         handle(intent)
     }
 
     private fun handle(callbackIntent: Intent?) {
-        val callback = callbackIntent?.dataString
-        if (callback == null) {
-            CallbackParseResult.Invalid("Callback sem URI")
-        } else {
-            parser.parse(callback)
+        val callbackUrl = callbackIntent?.dataString
+        lifecycleScope.launch {
+            val outcome = handleCallback(callbackUrl)
+            PaymentForegroundService.stop(this@CieloCallbackActivity)
+            val purchaseId = (outcome as? HandleCallbackOutcome.Handled)?.purchaseId
+            startActivity(
+                Intent(this@CieloCallbackActivity, MainActivity::class.java)
+                    .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
+                    .apply { if (purchaseId != null) putExtra(MainActivity.EXTRA_PURCHASE_ID, purchaseId) },
+            )
+            finish()
         }
-        PaymentForegroundService.stop(this)
-        startActivity(
-            Intent(this, MainActivity::class.java)
-                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP),
-        )
-        finish()
     }
 }

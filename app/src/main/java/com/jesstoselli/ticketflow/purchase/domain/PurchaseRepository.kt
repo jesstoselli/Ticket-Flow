@@ -31,4 +31,16 @@ interface PurchaseRepository {
     suspend fun applyPaymentResult(reference: String, result: PaymentResult): ApplyResult
     fun observePurchase(id: String): Flow<Purchase?>
     fun observePurchases(): Flow<List<Purchase>>
+
+    /** Referência da tentativa `PAYMENT_IN_PROGRESS` mais recente, para correlacionar callbacks sem referência. */
+    suspend fun activePaymentReference(): String?
+
+    /** Resolve a compra dona de uma referência de tentativa. */
+    suspend fun findPurchaseIdByReference(reference: String): String?
+
+    /**
+     * Promove para `PENDING`, de forma conservadora, tentativas `PAYMENT_IN_PROGRESS`
+     * iniciadas antes do início do processo atual (sem callback terminal). Retorna quantas foram afetadas.
+     */
+    suspend fun markInterruptedPaymentsPending(processStartedAtEpochMillis: Long): Int
 }

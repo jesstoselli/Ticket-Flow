@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Room
 import com.jesstoselli.ticketflow.BuildConfig
 import com.jesstoselli.ticketflow.database.TicketFlowDatabase
+import com.jesstoselli.ticketflow.payment.cielo.CieloCallbackParser
 import com.jesstoselli.ticketflow.payment.cielo.CieloCredentials
 import com.jesstoselli.ticketflow.payment.cielo.CieloDeepLinkFactory
 import com.jesstoselli.ticketflow.payment.cielo.CieloDeepLinkPaymentGateway
@@ -50,6 +51,10 @@ object InfrastructureModule {
     @Provides
     @Singleton
     fun provideCieloDeepLinkFactory(json: Json): CieloDeepLinkFactory = CieloDeepLinkFactory(json)
+
+    @Provides
+    @Singleton
+    fun provideCieloCallbackParser(json: Json): CieloCallbackParser = CieloCallbackParser(json)
 
     @Provides
     @Singleton

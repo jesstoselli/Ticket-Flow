@@ -122,6 +122,14 @@ class OfflinePurchaseRepository(
 
     override fun observePurchases(): Flow<List<Purchase>> =
         dao.observePurchases().map { purchases -> purchases.map(PurchaseEntity::toDomain) }
+
+    override suspend fun activePaymentReference(): String? = dao.activePaymentReference()
+
+    override suspend fun findPurchaseIdByReference(reference: String): String? =
+        dao.purchaseIdForReference(reference)
+
+    override suspend fun markInterruptedPaymentsPending(processStartedAtEpochMillis: Long): Int =
+        dao.markInterruptedPending(processStartedAtEpochMillis, timeProvider.now())
 }
 
 private fun PaymentResult.status(): PurchaseStatus = when (this) {
