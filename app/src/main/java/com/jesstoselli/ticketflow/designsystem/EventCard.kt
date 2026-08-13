@@ -70,7 +70,7 @@ fun EventCard(
                 ) {
                     Text(
                         text = formatBrl(event.unitPriceInCents),
-                        color = HyacinthBloom,
+                        color = MaterialTheme.colorScheme.primary,
                         fontWeight = FontWeight.Bold,
                         style = MaterialTheme.typography.titleMedium,
                     )
@@ -93,13 +93,13 @@ private fun DateRail(dateTime: String) {
             text = parts.getOrElse(0) { "" },
             style = MaterialTheme.typography.headlineMedium,
             fontWeight = FontWeight.Black,
-            color = TicketInk,
+            color = MaterialTheme.colorScheme.onSurface,
         )
         Text(
             text = parts.getOrElse(1) { "" },
             style = MaterialTheme.typography.labelLarge,
             fontWeight = FontWeight.Bold,
-            color = TicketInk,
+            color = MaterialTheme.colorScheme.onSurface,
         )
         Spacer(Modifier.height(10.dp))
         Box(Modifier.size(10.dp).background(GuavaPunch, CircleShape))
