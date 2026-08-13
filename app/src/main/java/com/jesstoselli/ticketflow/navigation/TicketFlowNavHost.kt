@@ -71,6 +71,7 @@ fun TicketFlowNavHost(
                 onIncrease = viewModel::increaseQuantity,
                 onDecrease = viewModel::decreaseQuantity,
                 onPay = viewModel::pay,
+                onBack = { navController.navigateUp() },
             )
         }
         composable(

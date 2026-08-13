@@ -15,10 +15,13 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedIconButton
-import androidx.compose.material3.Surface
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -29,34 +32,58 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.jesstoselli.ticketflow.model.formatBrl
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CheckoutScreen(
     uiState: CheckoutUiState,
     onIncrease: () -> Unit,
     onDecrease: () -> Unit,
     onPay: () -> Unit,
+    onBack: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    when (uiState) {
-        CheckoutUiState.Loading -> CenteredBox(modifier) {
-            CircularProgressIndicator()
-        }
+    Scaffold(
+        modifier = modifier,
+        topBar = {
+            TopAppBar(
+                title = { Text("Finalizar compra") },
+                navigationIcon = {
+                    IconButton(
+                        onClick = onBack,
+                        modifier = Modifier.semantics { contentDescription = "Voltar" },
+                    ) {
+                        Text(
+                            text = "←",
+                            style = MaterialTheme.typography.headlineSmall,
+                            modifier = Modifier.clearAndSetSemantics { },
+                        )
+                    }
+                },
+            )
+        },
+    ) { innerPadding ->
+        val contentModifier = Modifier.padding(innerPadding)
+        when (uiState) {
+            CheckoutUiState.Loading -> CenteredBox(contentModifier) {
+                CircularProgressIndicator()
+            }
 
-        CheckoutUiState.EventUnavailable -> CenteredBox(modifier) {
-            Text(
-                text = "Este evento não está mais disponível.",
-                style = MaterialTheme.typography.titleMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            CheckoutUiState.EventUnavailable -> CenteredBox(contentModifier) {
+                Text(
+                    text = "Este evento não está mais disponível.",
+                    style = MaterialTheme.typography.titleMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
+
+            is CheckoutUiState.Content -> CheckoutContent(
+                state = uiState,
+                onIncrease = onIncrease,
+                onDecrease = onDecrease,
+                onPay = onPay,
+                modifier = contentModifier,
             )
         }
-
-        is CheckoutUiState.Content -> CheckoutContent(
-            state = uiState,
-            onIncrease = onIncrease,
-            onDecrease = onDecrease,
-            onPay = onPay,
-            modifier = modifier,
-        )
     }
 }
 

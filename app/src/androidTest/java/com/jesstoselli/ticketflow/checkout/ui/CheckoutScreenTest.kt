@@ -36,7 +36,7 @@ class CheckoutScreenTest {
     @Test fun payButtonInvokesCallback() {
         var paid = false
         composeRule.setContent {
-            CheckoutScreen(content(), onIncrease = {}, onDecrease = {}, onPay = { paid = true })
+            CheckoutScreen(content(), onIncrease = {}, onDecrease = {}, onPay = { paid = true }, onBack = {})
         }
         composeRule.onNodeWithText("Pagar com Cielo").assertIsEnabled().performClick()
         assertTrue(paid)
@@ -44,7 +44,7 @@ class CheckoutScreenTest {
 
     @Test fun submittingDisablesPayButton() {
         composeRule.setContent {
-            CheckoutScreen(content(isSubmitting = true), onIncrease = {}, onDecrease = {}, onPay = {})
+            CheckoutScreen(content(isSubmitting = true), onIncrease = {}, onDecrease = {}, onPay = {}, onBack = {})
         }
         composeRule.onNodeWithText("Processando…").assertIsNotEnabled()
     }
@@ -52,7 +52,7 @@ class CheckoutScreenTest {
     @Test fun increaseUsesAccessibleContentDescription() {
         var increments = 0
         composeRule.setContent {
-            CheckoutScreen(content(), onIncrease = { increments++ }, onDecrease = {}, onPay = {})
+            CheckoutScreen(content(), onIncrease = { increments++ }, onDecrease = {}, onPay = {}, onBack = {})
         }
         composeRule.onNodeWithContentDescription("Aumentar quantidade").performClick()
         assertEquals(1, increments)

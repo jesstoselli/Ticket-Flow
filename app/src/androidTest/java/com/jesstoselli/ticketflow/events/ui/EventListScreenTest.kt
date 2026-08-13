@@ -15,7 +15,7 @@ class EventListScreenTest {
     @Test fun clickingEventOpensCheckout() {
         var openedEventId: String? = null
         composeRule.setContent {
-            TicketFlowTheme(darkTheme = false) {
+            TicketFlowTheme {
                 EventListScreen(
                     uiState = EventListUiState.Content(listOf(event())),
                     onEventClick = { openedEventId = it },
