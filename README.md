@@ -18,8 +18,8 @@ Dois cenários gravados no Emulador Cielo, lado a lado:
     <td align="center" width="50%"><b>⚠️ Pagamento com erro</b></td>
   </tr>
   <tr>
-    <td align="center"><video src="COLE_AQUI_A_URL_DO_VIDEO_DE_SUCESSO" controls width="100%"></video></td>
-    <td align="center"><video src="COLE_AQUI_A_URL_DO_VIDEO_DE_ERRO" controls width="100%"></video></td>
+    <td align="center"><video src="https://github.com/user-attachments/assets/6436dde5-da11-4d92-9c07-f6ec6f273ed0" controls width="100%"></video></td>
+    <td align="center"><video src="https://github.com/user-attachments/assets/3e1662cf-e84c-4924-98ab-2cfe89e99031" controls width="100%"></video></td>
   </tr>
 </table>
 
