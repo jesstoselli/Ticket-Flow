@@ -8,6 +8,41 @@ Case técnico para vaga Android. Kotlin + Jetpack Compose, sem backend.
 
 ---
 
+## Demonstração
+
+Dois cenários gravados no Emulador Cielo, lado a lado:
+
+<table>
+  <tr>
+    <td align="center" width="50%"><b>✅ Pagamento aprovado</b></td>
+    <td align="center" width="50%"><b>⚠️ Pagamento com erro</b></td>
+  </tr>
+  <tr>
+    <td align="center"><video src="COLE_AQUI_A_URL_DO_VIDEO_DE_SUCESSO" controls width="100%"></video></td>
+    <td align="center"><video src="COLE_AQUI_A_URL_DO_VIDEO_DE_ERRO" controls width="100%"></video></td>
+  </tr>
+</table>
+
+<!--
+Como colocar os vídeos:
+
+Opção A (recomendada) — anexo do GitHub:
+  1. Abra uma issue ou PR neste repositório (pode ser rascunho e depois fechar).
+  2. Arraste o arquivo .mp4 para a caixa de comentário e aguarde o upload.
+  3. O GitHub gera uma URL https://github.com/user-attachments/assets/...
+  4. Cole essa URL no src="" correspondente acima. Não precisa commitar o vídeo.
+
+Opção B — arquivo versionado no repositório:
+  1. Salve os vídeos em docs/media/ (ex.: docs/media/sucesso.mp4).
+  2. Use o caminho relativo: src="docs/media/sucesso.mp4".
+  (Cuidado com o tamanho do repositório se os vídeos forem grandes.)
+
+Prefere GIF? Ele sempre renderiza inline como imagem. Troque
+<video src="URL" controls width="100%"></video> por <img src="URL" width="100%">.
+-->
+
+---
+
 ## Requisitos
 
 - **Android Studio** (Ladybug ou mais recente) ou apenas o Android SDK + Gradle Wrapper.
